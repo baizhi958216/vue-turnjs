@@ -1,18 +1,17 @@
 <template>
   <div id="app">
     <div class="flipmenu">
-      <span v-for="img,index in imgUrl" :key="index" @click="switchToPage(index)">
-        第 {{ index + 1 }} 页
+      <span v-for="item in imgs" :key="item.docId" @click="switchToPage(item.docId)">
+        {{ item.title }}
       </span>
     </div>
     <div id="flipbook">
-      <div v-for="img in imgUrl" 
-      :key="img.index" 
-      :style="{ 
-        backgroundImage: 'url(' + img.imgurl + ')', 
-        backgroundRepeat: 'no-repeat', 
+      <div v-for="item in imgs" :key="item.docId" :style="{
+        backgroundImage: 'url(' + item.imgurl + ')',
+        backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundSize: 'contain' }"></div>
+        backgroundSize: 'contain'
+      }"></div>
     </div>
   </div>
 </template>
@@ -21,18 +20,45 @@
 import $ from 'jquery'
 // eslint-disable-next-line no-unused-vars
 import turn from '@/utils/turn.js'
+
+const dataStructs = [
+  {
+    title: 'docA',
+    docId: '100001',
+    imgurl: 'assets/01.jpg'
+  },
+  {
+    title: 'docB',
+    docId: '100002',
+    imgurl: 'assets/02.jpg'
+  },
+  {
+    title: 'docC',
+    docId: '100003',
+    imgurl: 'assets/03.jpg'
+  },
+  {
+    title: 'docD',
+    docId: '100004',
+    imgurl: 'assets/04.jpg'
+  },
+  {
+    title: 'docE',
+    docId: '100005',
+    imgurl: 'assets/05.jpg'
+  },
+  {
+    title: 'docF',
+    docId: '100006',
+    imgurl: 'assets/06.jpg'
+  }
+]
+
 export default {
   name: 'App',
   data() {
     return {
-      imgUrl: [
-        { imgurl: 'assets/01.jpg', index: 1 },
-        { imgurl: 'assets/02.jpg', index: 2 },
-        { imgurl: 'assets/03.jpg', index: 3 },
-        { imgurl: 'assets/04.jpg', index: 4 },
-        { imgurl: 'assets/05.jpg', index: 5 },
-        { imgurl: 'assets/06.jpg', index: 6 },
-      ]
+      imgs: dataStructs
     }
   },
   methods: {
@@ -50,7 +76,7 @@ export default {
       })
     },
     switchToPage(page) {
-      $("#flipbook").turn("page", page); // 点击前往目标页
+      $("#flipbook").turn("page", dataStructs.findIndex(item => item.docId === page)); // 点击前往目标页
     }
   },
   mounted() {
@@ -74,23 +100,28 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 @keyframes scaleAnimation {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 .flipmenu {
   margin: 30px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .flipmenu span {
   cursor: pointer;
   transition: color 0.3s ease-in-out, transform 0.5s ease-in-out;
