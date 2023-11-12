@@ -16,7 +16,7 @@
  * benefit and not for any commercial purpose or for monetary gain.
  * 
  **/
-
+/* eslint-disable */
 (function($) {
 
 'use strict';
